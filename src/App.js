@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
 import { HashRouter as Router, Route,Switch } from "react-router-dom";
 import './App.css';
-import NewMemberForm from "./components/NewMemberForm/NewMemberForm";
+import NewMemberFormTest from "./components/NewMemberFormTest/NewMemberFormTest";
 
 function App() {
   return (
     <div>
       <header>Band App</header>
-      <NewMemberForm/>
+      <NewMemberFormTest/>
     </div>
   );
 }

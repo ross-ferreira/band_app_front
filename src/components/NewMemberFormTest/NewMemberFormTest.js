@@ -2,7 +2,7 @@ import React, { useState, Component, useEffect } from "react";
 import axios from "axios";
 import UploadImage from "../UploadImage/UploadImage";
 
-function NewMemberForm() {
+function NewMemberFormTest() {
     const initalform={
         account_type:"groupie",
         name:"",
@@ -15,17 +15,54 @@ function NewMemberForm() {
         gender_pref:"male",
         about_me:"",
     }
+    const initalFile={
+        image:""
+    }
 
     const [formValues,setFormValues]= useState(initalform)
+    const [fileValue,setFileValues]= useState(initalFile)
   
     const handleFormChange = (e) => setFormValues({
         ...formValues,
         [e.target.name]: e.target.name === 'distance' ? parseInt(e.target.value) : e.target.value,
       });
+    const handleFileUpload = (e) => setFileValues({
+        ...fileValue,
+        image: e.target.files[0],
+      });
+
+    console.log(fileValue);
+
+
+    // handleFileHandler = (e) =>{
+    //     e.preventDefault();
+    //     let formData = new FormData();
+    //     formData.append("image", this.state.image);
+        
+    //     axios.put('http://band_app.test/api/file/1/image_list',formData)
+    //     .then(response=> {
+    //         console.log(response)
+    //     })
+    //     .catch(error=>{
+    //         console.log(error)
+    //     })
+    // };
 
       const handleSubmit= e => {
         e.preventDefault();
-        axios.post('http://band_app.test/api/members',formValues)
+        let formData = new FormData();
+        formData.append("account_type", formValues.account_type);
+        formData.append("name", formValues.name);
+        formData.append("email", formValues.email);
+        formData.append("date_of_birth", formValues.date_of_birth);
+        formData.append("gender", formValues.gender);
+        formData.append("distance", formValues.distance);
+        formData.append("location", formValues.location);
+        formData.append("band_type", formValues.band_type);
+        formData.append("gender_pref", formValues.gender_pref);
+        formData.append("about_me", formValues.about_me);
+        formData.append("image", fileValue.image);
+        axios.post('http://band_app.test/api/members',formData)
         .then(response=> {
             console.log(response)
         })
@@ -40,7 +77,7 @@ function NewMemberForm() {
 
 {/* <input type="text" placeholder="First name" name="First name" ref={register({required: true, maxLength: 80})} /> */}
           <h1>Create Member(using create())</h1>
-          <form onSubmit={handleSubmit} class="pb-5">
+          <form onSubmit={handleSubmit} class="pb-5" encType="multipart/form-data">
               <label>Account Type</label>
               <div class="input-group">
                 <select defaultValue={formValues.account_type} type="text" name="account_type" onChange={handleFormChange}>
@@ -108,6 +145,7 @@ function NewMemberForm() {
               <div class="input-group">
                   <input placeholder="Enter About You" onChange={handleFormChange} type="text" name="about_me" value={formValues.about_me} />
               </div>
+                <input onChange={handleFileUpload} type="file" name="image"/>
               <button className="btn" type="submit">Add Member</button>
           </form>
                   <div>{formValues.account_type}</div>
@@ -120,14 +158,14 @@ function NewMemberForm() {
                   <div>{formValues.band_type}</div>
                   <div>{formValues.gender_pref}</div>
                   <div>{formValues.about_me}</div>
-                  <UploadImage/>
+                  {/* <UploadImage/> */}
         </>
       )
 }
     
     
 
-export default NewMemberForm;
+export default NewMemberFormTest;
 
 
 
